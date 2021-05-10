@@ -16,18 +16,18 @@ namespace DPBack.Domain.API.Controllers
     [Route("/v1/owner")]
     public class OwnerController:ControllerBase
     {
-        
-        [Route("")]
+        [AllowAnonymous]        
+        [Route("{id:guid}")]
         [HttpGet]
-        public Owner GetByNameId([FromServices]IOwnerRepository repository, [FromBody]Guid id)
-        {
+        public Owner GetByNameId([FromServices]IOwnerRepository repository, Guid id)
+        {            
             return repository.GetByNameId(id);
         }
 
         [Route("")]
         [HttpPost]
-        public CommandResult CreateOwner ([FromServices]IOwnerRepository repository
-        , [FromBody]OwnerCreateCommand command,[FromServices]OwnerCreateHandler handler)
+        public CommandResult CreateOwner (
+            [FromBody]OwnerCreateCommand command,[FromServices]OwnerCreateHandler handler)
         {
             return (CommandResult)handler.Handle(command);
         }
